@@ -30,7 +30,7 @@ RUN wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCo
 RUN unzip FiraCode.zip -d ~/.local/share/fonts
 RUN fc-cache -fv
 
-RUN git clone --recurse-submodules -j8 https://github.com/atidyshirt/terminal-configs.git ~
+RUN git clone --recurse-submodules -j8 https://github.com/atidyshirt/jordanp-env.git ~
 RUN sed -i "s/max_jobs *= *[0-9]\+,*//" ~/.config/nvim/lua/nvim/plugins/packer/install.lua
 
 RUN nvim \
