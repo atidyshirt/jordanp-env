@@ -3,11 +3,8 @@ FROM debian:latest
 RUN sudo apt install git \
     neovim \
     zsh \
-    node \
     yarn \
-    npm \
     python3 \
-    zsh-autosuggestions \
     tmux \
     -y
 
