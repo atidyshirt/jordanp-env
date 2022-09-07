@@ -20,7 +20,7 @@ ARG LG_ARCHIVE='lazygit.tar.gz'
 
 # Update repositories and install software:
 RUN apt-get update && apt-get -y install ninja-build cmake g++ unzip curl fzf ripgrep tree git xclip \
-    python3 python3-pip nodejs npm tzdata zip unzip zsh tmux neovim exa
+    python3 python3-pip nodejs npm tzdata zip unzip zsh tmux neovim exa docker
 
 # Cooperate Neovim with Python 3.
 RUN pip3 install pynvim
