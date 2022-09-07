@@ -1,0 +1,12 @@
+version: '1.0'
+
+services:
+  jordanp-env:
+    image: atidyshirt/jordanp-env:[tag]
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 2G
+    volumes:
+      - $(pwd):/home/workspace
