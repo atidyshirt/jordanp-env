@@ -9,4 +9,4 @@ services:
         limits:
           memory: 2G
     volumes:
-      - $(pwd):/home/workspace
+      - $(pwd):/home/ws

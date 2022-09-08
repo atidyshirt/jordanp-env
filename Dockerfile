@@ -39,7 +39,6 @@ COPY ./config/ /root/.config/
 
 # Install Neovim extensions.
 RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 RUN mkdir -p /root/TMP
 
@@ -55,11 +54,13 @@ RUN git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosu
 # Bash aliases
 COPY ./home/ /root/
 
+RUN chsh -s $(which zsh)
+
 # Create directory for projects (there should be mounted from host).
-RUN mkdir -p /home/workspace
+RUN mkdir -p /home/ws
 
 # Set default location after container startup.
-WORKDIR /home/workspace
+WORKDIR /home/ws
 
 # Avoid container exit.
 CMD ["tail", "-f", "/dev/null"]

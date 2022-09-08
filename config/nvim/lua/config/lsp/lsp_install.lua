@@ -7,13 +7,7 @@ lsp_installer.setup({
 		"bashls",
 		"ccls",
 		"clangd",
-		"cmake",
-		"dockerls",
-		"zk",
-		"diagnosticls",
-		"arduino_language_server",
 		"angularls",
-		"sumneko_lua"
 	},
     ui = {
         icons = {
@@ -24,7 +18,9 @@ lsp_installer.setup({
     }
 })
 
-local servers = { "pyright", "tsserver", "bashls", "cmake", "ccls", "clangd", "dockerls", "zk", "diagnosticls", "arduino_language_server", "angularls", "sumneko_lua" }
+local servers = { 
+    "pyright", "tsserver", "bashls", "ccls", "clangd", "angularls" 
+}
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {}
 end
