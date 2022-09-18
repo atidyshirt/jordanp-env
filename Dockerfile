@@ -38,7 +38,7 @@ RUN mkdir -p /root/.config/nvim
 COPY ./config/ /root/.config/
 
 # Install Neovim extensions.
-RUN nvim +PackerInstall +PackerCompile +qall
+RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 RUN mkdir -p /root/TMP
 
