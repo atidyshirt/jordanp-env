@@ -19,8 +19,8 @@ ARG LG_GITHUB='https://github.com/jesseduffield/lazygit/releases/download/v0.31.
 ARG LG_ARCHIVE='lazygit.tar.gz'
 
 # Update repositories and install software:
-RUN apt-get update && apt-get -y install ninja-build cmake g++ unzip curl fzf ripgrep tree git xclip \
-    python3 python3-pip nodejs npm tzdata zip unzip zsh tmux neovim exa docker libcurl4-gnutls-dev
+RUN add-apt-repository ppa:neovim-ppa/unstable && apt-get update && apt-get -y install ninja-build cmake g++ unzip curl fzf ripgrep tree git xclip \
+    python3 python3-pip nodejs npm tzdata zip unzip zsh tmux neovim exa docker libcurl4-gnutls-dev \
 
 # Cooperate Neovim with Python 3.
 RUN pip3 install pynvim pyright
