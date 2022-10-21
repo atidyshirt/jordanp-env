@@ -20,13 +20,13 @@ ARG LG_ARCHIVE='lazygit.tar.gz'
 
 # Update repositories and install software:
 RUN apt-get update && apt-get -y install ninja-build cmake g++ unzip curl fzf ripgrep tree git xclip \
-    python3 python3-pip nodejs npm tzdata zip unzip zsh tmux neovim exa docker
+    python3 python3-pip nodejs npm tzdata zip unzip zsh tmux neovim exa docker libcurl4-gnutls-dev
 
 # Cooperate Neovim with Python 3.
-RUN pip3 install pynvim
+RUN pip3 install pynvim pyright
 
 # Cooperate NodeJS with Neovim.
-RUN npm i -g neovim
+RUN npm i -g neovim typescript-language-server typescript
 
 # Install Packer.
 RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
