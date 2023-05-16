@@ -1,66 +1,53 @@
 # Docker file for jordanp-env image.
 # @author Jordan Pyott
 
-# Debian image as base (unstable for newest software).
-FROM debian:sid-20211220
+FROM ubuntu:20.04 AS builder
 
-# Set image locale.
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV TZ=Pacific/Auckland
+LABEL maintainer="atidyshirt"
+
+ARG BUILD_APT_DEPS="ninja-build gettext libevent-dev ncurses-dev build-essential bison libtool libtool-bin autoconf automake cmake g++ pkg-config unzip git binutils wget fontconfig"
+ARG FONT_VERSION="3.0.1"
+ARG DEBIAN_FRONTEND=noninteractive
+ARG TARGET=stable
+
+RUN apt update && apt upgrade -y && \
+  apt install -y ${BUILD_APT_DEPS} && \
+  git clone https://github.com/neovim/neovim.git /tmp/neovim && \
+  cd /tmp/neovim && \
+  git fetch --all --tags -f && \
+  git checkout ${TARGET} && \
+  make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=/usr/local/ && \
+  make install && \
+  strip /usr/local/bin/nvim
+
+RUN git clone https://github.com/tmux/tmux.git && \
+  cd tmux && \
+  sh autogen.sh && \
+  ./configure && \
+  make && make install
+
+RUN wget https://github.com/ryanoasis/nerd-fonts/releases/download/v${FONT_VERSION}/FiraCode.zip && \
+  unzip FiraCode.zip -d /usr/share/fonts && \
+  fc-cache -fv
+
+FROM ubuntu:20.04
+
+COPY --from=builder /usr/local /usr/local/
+COPY --from=builder /usr/share/fonts /usr/share/fonts/
+
 ENV TERM=xterm-256color
 
-# Expose some ports to host by default.
-EXPOSE 8080 8081 8082 8083 8084 8085
+ARG ENVIRONMENT_TOOLS="git zsh"
 
-# Lazygit variables
-ARG LG='lazygit'
-ARG LG_GITHUB='https://github.com/jesseduffield/lazygit/releases/download/v0.31.4/lazygit_0.31.4_Linux_x86_64.tar.gz'
-ARG LG_ARCHIVE='lazygit.tar.gz'
+RUN apt update && apt upgrade -y && \
+  apt install -y ${ENVIRONMENT_TOOLS}
 
-# Update repositories and install software:
-RUN add-apt-repository ppa:neovim-ppa/unstable && apt-get update && apt-get -y install ninja-build cmake g++ unzip curl fzf ripgrep tree git xclip \
-    python3 python3-pip nodejs npm tzdata zip unzip zsh tmux neovim exa docker libcurl4-gnutls-dev \
-
-# Cooperate Neovim with Python 3.
-RUN pip3 install pynvim pyright
-
-# Cooperate NodeJS with Neovim.
-RUN npm i -g neovim typescript-language-server typescript
-
-# Install Packer.
-RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-
-# Create directory for Neovim configuration files.
 RUN mkdir -p /root/.config/nvim
-
-# Copy Neovim configuration files.
 COPY ./config/ /root/.config/
-
-# Install Neovim extensions.
-RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-
-RUN mkdir -p /root/TMP
-
-# Install Lazygit from binary
-RUN cd /root/TMP && curl -L -o $LG_ARCHIVE $LG_GITHUB
-RUN cd /root/TMP && tar xzvf $LG_ARCHIVE && mv $LG /usr/bin/
-
-# Delete TMP directory
-RUN rm -rf /root/TMP
-
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
-
-# Bash aliases
 COPY ./home/ /root/
-
 RUN chsh -s $(which zsh)
+RUN mkdir -p /home/workspace
+WORKDIR /home/workspace
 
-# Create directory for projects (there should be mounted from host).
-RUN mkdir -p /home/ws
-
-# Set default location after container startup.
-WORKDIR /home/ws
-
-# Avoid container exit.
-CMD ["tail", "-f", "/dev/null"]
+CMD ["/bin/zsh"]

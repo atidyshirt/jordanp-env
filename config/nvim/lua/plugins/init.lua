@@ -1,241 +1,109 @@
-local plugins = {
+return {
+    {
+        "Wansmer/treesj",
+        keys = {
+            {
+                "<leader>lj",
+                "<cmd>TSJToggle<cr>",
+                desc = "Split / Join",
+            },
+        },
+        opts = { use_default_keymaps = false },
+    },
 
-  ["nvim-lua/plenary.nvim"] = { module = "plenary" },
+    -- stylua: ignore
+    {
+        "ThePrimeagen/harpoon",
+        config = true,
+        keys = {
+            { "ga", function() require('harpoon.mark').add_file() end, desc = "Harpoon add" },
+            { "gm", function() require('harpoon.ui').toggle_quick_menu() end, desc = "Harpoon menu" },
+            { "gj", function() require('harpoon.ui').nav_file(1) end, desc = "Harpoon file 1" },
+            { "gk", function() require('harpoon.ui').nav_file(2) end, desc = "Harpoon file 2" },
+            { "gl", function() require('harpoon.ui').nav_file(3) end, desc = "Harpoon file 3" },
+            { "g;", function() require('harpoon.ui').nav_file(4) end, desc = "Harpoon file 4" },
+            { "gt", function() require('harpoon.tmux').gotoTerminal(1) end, desc = "Terminal 1" },
+            { "gy", function() require('harpoon.tmux').gotoTerminal(2) end, desc = "Terminal 2" },
+            { "<leader><space>m", function() require('harpoon.cmd-ui').toggle_quick_menu() end, desc = "Harpoon command menu" },
+            { "<leader><space>j", function() require('harpoon.tmux').sendCommand(1,1) end, desc = "Send Command 1" },
+            { "<leader><space>k", function() require('harpoon.tmux').sendCommand(1,2) end, desc = "Send Command 2" },
+            { "<leader><space>l", function() require('harpoon.tmux').sendCommand(2,3) end, desc = "Send Command 3" },
+            { "<leader><space>;", function() require('harpoon.tmux').sendCommand(2,4) end, desc = "Send Command 4" },
+        },
+    },
 
-  ["lewis6991/impatient.nvim"] = {},
+    {
+        "ThePrimeagen/refactoring.nvim",
+        requires = {
+            { "nvim-lua/plenary.nvim" },
+            { "nvim-treesitter/nvim-treesitter" },
+        },
+        config = function()
+            require("refactoring").setup({})
+            require("telescope").load_extension("refactoring")
+        end,
+    },
 
-  ["wbthomason/packer.nvim"] = {
-    cmd = require("core.lazy_load").packer_cmds,
-    config = function()
-      require "plugins"
-    end,
-  },
+    {
+        "notjedi/nvim-rooter.lua",
+        config = function()
+            require("nvim-rooter").setup({
+                rooter_patterns = {
+                    ".git",
+                },
+                trigger_patterns = { "*" },
+                manual = false,
+            })
+        end,
+    },
 
-  ["NvChad/extensions"] = { module = { "telescope", "nvchad" } },
+    {
+        "max397574/better-escape.nvim",
+        event = "InsertEnter",
+        config = function()
+            require("better_escape").setup()
+        end,
+    },
 
-  ["ritchielrez/base46"] = {
-    config = function()
-      local ok, base46 = pcall(require, "base46")
+    {
+        "atidyshirt/markdown-literate",
+        config = function()
+            require("markdown-literate").setup()
+        end,
+    },
 
-      if ok then
-        base46.load_theme()
-      end
-    end,
-  },
+    { "unblevable/quick-scope" },
+    { "tpope/vim-fugitive" },
+    { "tpope/vim-surround" },
+    { "tpope/vim-sleuth" },
+    {
+        "alexghergh/nvim-tmux-navigation",
+        config = function()
+            require("nvim-tmux-navigation").setup({
+                disable_when_zoomed = true, -- defaults to false
+                keybindings = {
+                    left = "<C-h>",
+                    down = "<C-j>",
+                    up = "<C-k>",
+                    right = "<C-l>",
+                    last_active = "<C-\\>",
+                    next = "<C-Space>",
+                },
+            })
+        end,
+    },
+    { "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" },
 
-  ["NvChad/ui"] = {
-    after = "base46",
-    config = function()
-      local present, nvchad_ui = pcall(require, "nvchad_ui")
+    { "Bekaboo/deadcolumn.nvim", config = true },
 
-      if present then
-        nvchad_ui.setup()
-      end
-    end,
-  },
-
-  ["NvChad/nvterm"] = {
-    module = "nvterm",
-    config = function()
-      require "plugins.configs.nvterm"
-    end,
-  },
-
-  ["kyazdani42/nvim-web-devicons"] = {
-    after = "ui",
-    module = "nvim-web-devicons",
-    config = function()
-      require("plugins.configs.others").devicons()
-    end,
-  },
-
-  ["lukas-reineke/indent-blankline.nvim"] = {
-    opt = true,
-    setup = function()
-      require("core.lazy_load").on_file_open "indent-blankline.nvim"
-      require("core.utils").load_mappings "blankline"
-    end,
-    config = function()
-      require("plugins.configs.others").blankline()
-    end,
-  },
-
-  ["NvChad/nvim-colorizer.lua"] = {
-    opt = true,
-    setup = function()
-      require("core.lazy_load").on_file_open "nvim-colorizer.lua"
-    end,
-    config = function()
-      require("plugins.configs.others").colorizer()
-    end,
-  },
-
-  ["nvim-treesitter/nvim-treesitter"] = {
-    module = "nvim-treesitter",
-    setup = function()
-      require("core.lazy_load").on_file_open "nvim-treesitter"
-    end,
-    cmd = require("core.lazy_load").treesitter_cmds,
-    run = ":TSUpdate",
-    config = function()
-      require "plugins.configs.treesitter"
-    end,
-  },
-
-  -- git stuff
-  ["lewis6991/gitsigns.nvim"] = {
-    ft = "gitcommit",
-    setup = function()
-      require("core.lazy_load").gitsigns()
-    end,
-    config = function()
-      require("plugins.configs.others").gitsigns()
-    end,
-  },
-
-  -- lsp stuff
-  ["williamboman/mason.nvim"] = {
-    cmd = require("core.lazy_load").mason_cmds,
-    config = function()
-      require "plugins.configs.mason"
-    end,
-  },
-
-  ["neovim/nvim-lspconfig"] = {
-    opt = true,
-    setup = function()
-      require("core.lazy_load").on_file_open "nvim-lspconfig"
-    end,
-    config = function()
-      require "plugins.configs.lspconfig"
-    end,
-  },
-
-  -- load luasnips + cmp related in insert mode only
-
-  ["rafamadriz/friendly-snippets"] = {
-    module = { "cmp", "cmp_nvim_lsp" },
-    event = "InsertEnter",
-  },
-
-  ["hrsh7th/nvim-cmp"] = {
-    after = "friendly-snippets",
-    config = function()
-      require "plugins.configs.cmp"
-    end,
-  },
-
-  ["L3MON4D3/LuaSnip"] = {
-    wants = "friendly-snippets",
-    after = "nvim-cmp",
-    config = function()
-      require("plugins.configs.others").luasnip()
-    end,
-  },
-
-  ["saadparwaiz1/cmp_luasnip"] = { after = "LuaSnip" },
-  ["hrsh7th/cmp-nvim-lua"] = { after = "cmp_luasnip" },
-  ["hrsh7th/cmp-nvim-lsp"] = { after = "cmp-nvim-lua" },
-  ["hrsh7th/cmp-buffer"] = { after = "cmp-nvim-lsp" },
-  ["hrsh7th/cmp-path"] = { after = "cmp-buffer" },
-
-  -- misc plugins
-  ["windwp/nvim-autopairs"] = {
-    after = "nvim-cmp",
-    config = function()
-      require("plugins.configs.others").autopairs()
-    end,
-  },
-
-  ["goolord/alpha-nvim"] = {
-    after = "base46",
-    disable = false,
-    config = function()
-      require "plugins.configs.alpha"
-    end,
-  },
-
-  ["numToStr/Comment.nvim"] = {
-    module = "Comment",
-    keys = { "gc", "gb" },
-    config = function()
-      require("plugins.configs.others").comment()
-    end,
-    setup = function()
-      require("core.utils").load_mappings "comment"
-    end,
-  },
-
-  -- file managing , picker etc
-  ["kyazdani42/nvim-tree.lua"] = {
-    ft = "alpha",
-    cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-    config = function()
-      require "plugins.configs.nvimtree"
-    end,
-    setup = function()
-      require("core.utils").load_mappings "nvimtree"
-    end,
-  },
-
-  ["nvim-telescope/telescope.nvim"] = {
-    cmd = "Telescope",
-    config = function()
-      require "plugins.configs.telescope"
-    end,
-    setup = function()
-      require("core.utils").load_mappings "telescope"
-    end,
-  },
-
-  -- Only load whichkey after all the gui
-  ["folke/which-key.nvim"] = {
-    disable = true,
-    module = "which-key",
-    keys = { "<leader>", '"', "'", "`" },
-    config = function()
-      require "plugins.configs.whichkey"
-    end,
-    setup = function()
-      require("core.utils").load_mappings "whichkey"
-    end,
-  },
-
-  ["max397574/better-escape.nvim"] = {
-    event = "InsertEnter",
-    config = function()
-      require("better_escape").setup()
-    end,
-  },
-
-  ['unblevable/quick-scope'] = {},
-  ['tpope/vim-fugitive'] = {},
-  ['tpope/vim-surround'] = {},
-  ['tpope/vim-sleuth'] = {},
-  ['christoomey/vim-tmux-navigator'] = {},
-  ['weilbith/nvim-code-action-menu'] = {
-    cmd = 'CodeActionMenu'
-  },
-
-  -- Harpoon
-  ['ThePrimeagen/harpoon'] = {},
+    -- local history
+    {
+        "dinhhuy258/vim-local-history",
+        config = function()
+            local path = os.getenv("HOME") .. "/.config"
+            vim.g.local_history_path = path .. "/.local-history"
+            vim.g.local_history_max_changes = 100
+        end,
+        build = ":UpdateRemotePlugins",
+    },
 }
-
--- Load all plugins
-local present, packer = pcall(require, "packer")
-
-if present then
-  vim.cmd "packadd packer.nvim"
-
-  -- Override with default plugins with user ones
-  plugins = require("core.utils").merge_plugins(plugins)
-
-  -- load packer init options
-  local init_options = require("plugins.configs.others").packer_init()
-  init_options = require("core.utils").load_override(init_options, "wbthomason/packer.nvim")
-  packer.init(init_options)
-
-  for _, v in pairs(plugins) do
-    packer.use(v)
-  end
-end
