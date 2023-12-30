@@ -20,9 +20,9 @@ RUN apt update && apt upgrade -y && \
   make install && \
   strip /usr/local/bin/nvim
 
-RUN git clone https://github.com/tmux/tmux.git && \
-  cd tmux && \
-  sh autogen.sh && \
+RUN wget https://github.com/tmux/tmux/releases/download/3.3a/tmux-3.3a.tar.gz && \
+  tar xvf tmux-3.3a.tar.gz && \
+  cd ./tmux-3.3a && \
   ./configure && \
   make && make install
 
@@ -36,17 +36,36 @@ COPY --from=builder /usr/local /usr/local/
 COPY --from=builder /usr/share/fonts /usr/share/fonts/
 
 ENV TERM=xterm-256color
+ENV NVIM_LSP_DOCKER=true
 
-ARG ENVIRONMENT_TOOLS="git zsh"
+# Ensure we don't get asked for timezone data - provide via ipapi api
+RUN ln -fs /usr/share/zoneinfo/$(curl https://ipapi.co/timezone) /etc/localtime
+RUN export DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt upgrade -y
+RUN apt install -y ca-certificates curl gnupg
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+ENV NODE_MAJOR=18
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+
+ARG ENVIRONMENT_TOOLS="wget git ripgrep zsh gcc libevent-core-2.1-7 nodejs python software-properties-common"
 
 RUN apt update && apt upgrade -y && \
   apt install -y ${ENVIRONMENT_TOOLS}
 
+RUN npm install --global yarn typescript
+
 RUN mkdir -p /root/.config/nvim
 COPY ./config/ /root/.config/
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+
 COPY ./home/ /root/
 RUN chsh -s $(which zsh)
+
+RUN nvim --headless "+Lazy! sync" +qa
+
 RUN mkdir -p /home/workspace
 WORKDIR /home/workspace
 

@@ -1,26 +1,20 @@
-# Makefile for Neovim IDE.
-#
-# @author Maciej Bedra
+environment = atidyshirt/jordanp-env
 
-nvim = mashmb/nvim:dev
-
-all-build = build-nvim
-all-push = push-nvim
-all-clean = clean-nvim
-
-all: $(all-build) $(all-push) $(all-clean)
+all-build = build-environment
+all-push = push-environment
+all-clean = clean-environment
 
 login:
 	docker login
 
-build-nvim:
-	echo "--- Building $(nvim) image ---"
-	cd nvim && docker build -t $(nvim) .
+build-environment:
+	echo "--- Building $(environment) image ---"
+	docker build -t $(environment) .
 
-push-nvim: login
-	echo "--- Pushing $(nvim) image ---"
-	docker push $(nvim)
+push-environment: login
+	echo "--- Pushing $(environment) image ---"
+	docker push $(environment)
 
-clean-nvim:
-	echo "--- Removing $(nvim) image ---"
-	docker image rm -f $(nvim)
+clean-environment:
+	echo "--- Removing $(environment) image ---"
+	docker image rm -f $(environment)
