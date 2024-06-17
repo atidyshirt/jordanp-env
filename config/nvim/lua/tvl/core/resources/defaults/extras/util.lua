@@ -34,6 +34,7 @@ return {
 
   {
     "nvim-tree/nvim-web-devicons",
+    enabled = vim.g.nerd_font_enabled,
     lazy = true,
     config = function ()
       require("nvim-web-devicons").setup()
