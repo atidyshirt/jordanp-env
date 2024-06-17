@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker run -it -v $(pwd):/home/workspace --detach-keys="ctrl-d" -v ~/.gitconfig:/etc/gitconfig atidyshirt/jordanp-env:latest
+docker run -it -v ~/.gitconfig:/etc/gitconfig -v $(pwd):/home/workspace --detach-keys="ctrl-x" atidyshirt/jordanp-env:latest

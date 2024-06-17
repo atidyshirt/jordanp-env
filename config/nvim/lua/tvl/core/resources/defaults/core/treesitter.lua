@@ -1,7 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    version = false, -- last release is way too old and doesn't work on Windows
+    version = false,
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
@@ -19,6 +19,7 @@ return {
         "tsx",
         "typescript",
         "vim",
+        "yaml",
         "php",
         "scss",
         "cpp",
@@ -27,7 +28,7 @@ return {
         "dockerfile",
       },
       highlight = { enable = true },
-      indent = { enable = true, disable = { "python", "html" } },
+      indent = { enable = true, disable = { "yaml", "python", "html" } },
       context_commentstring = { enable = true },
     },
     config = function(_, opts)
