@@ -1,11 +1,9 @@
-# tmux attatch
 alias ts='tmux a || tmux'
 
-## `cd` changes
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ls='ls --color'
 
-# Neovim + Coding
 alias vi='nvim'
 alias svi='sudo nvim'
 alias gc='git clone'
