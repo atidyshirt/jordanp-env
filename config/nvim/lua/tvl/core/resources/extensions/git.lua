@@ -1,20 +1,31 @@
 local Util = require("tvl.util")
 local Icons = require("tvl.core.icons")
 
+local function get_signs()
+  local signs = {}
+  if vim.g.nerd_font_enabled == true then
+    signs = Icons.gitsigns
+  else
+    signs = Icons.gitsigns_text
+  end
+  return {
+    add = { text = signs.add },
+    change = { text = signs.change },
+    delete = { text = signs.delete },
+    topdelhfe = { text = signs.topdelhfe },
+    changedelete = { text = signs.changedelete },
+    untracked = { text = signs.untracked },
+  }
+end
+
 return {
   { "tpope/vim-fugitive" },
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
     opts = {
-      signs = {
-        add = { text = Icons.gitsigns.add },
-        change = { text = Icons.gitsigns.change },
-        delete = { text = Icons.gitsigns.delete },
-        topdelhfe = { text = Icons.gitsigns.topdelhfe },
-        changedelete = { text = Icons.gitsigns.changedelete },
-        untracked = { text = Icons.gitsigns.untracked },
-      },
+      signs = get_signs(),
+      signcolumn = vim.g.nerd_font_enabled,
       current_line_blame = false,
       current_line_blame_opts = {
         delay = 300,
