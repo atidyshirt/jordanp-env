@@ -1,23 +1,5 @@
 local Icon = require("tvl.core.icons")
 
-local function get_icons()
-  if vim.g.nerd_font_enabled == true then
-    return Icon.kinds
-  else
-    return false
-  end
-end
-
-local function get_symbols()
-  if vim.g.nerd_font_enabled == true then
-    return Icon.bbq_symbols
-  else
-    local symbols = Icon.bbq_symbols
-    symbols.separator = '>'
-    return symbols
-  end
-end
-
 return {
   {
     "utilyre/barbecue.nvim",
@@ -35,8 +17,8 @@ return {
       include_buftypes = { "" },
       exclude_filetypes = { "gitcommit", "Trouble", "toggleterm" },
       show_modified = false,
-      symbols = get_symbols(),
-      kinds = get_icons(),
+      symbols = Icon.bbq_symbols,
+      kinds = Icon.kinds,
     },
   },
 }
