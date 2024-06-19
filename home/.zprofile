@@ -1,3 +1,6 @@
+export LC_ALL="C.UTF-8"
+export LANG="C.UTF-8"
+export TERM="xterm-256color"
 export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH" 
 export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH" 
 export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
