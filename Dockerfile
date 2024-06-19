@@ -51,7 +51,7 @@ RUN curl -sSL https://get.docker.com/ | sh
 ENV NODE_MAJOR=18
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 
-ARG ENVIRONMENT_TOOLS="wget git ripgrep zsh gcc libevent-core-2.1-7 nodejs python software-properties-common"
+ARG ENVIRONMENT_TOOLS="wget git make ripgrep zsh gcc libevent-core-2.1-7 nodejs python software-properties-common"
 
 RUN apt update && apt upgrade -y && \
   apt install -y ${ENVIRONMENT_TOOLS}
