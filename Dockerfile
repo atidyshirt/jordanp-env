@@ -5,7 +5,7 @@ FROM ubuntu:20.04 AS builder
 
 LABEL maintainer="atidyshirt"
 
-ARG BUILD_APT_DEPS="ninja-build gettext libevent-dev ncurses-dev build-essential bison libtool libtool-bin autoconf automake cmake g++ pkg-config unzip git binutils wget fontconfig"
+ARG BUILD_APT_DEPS="ninja-build gettext libevent-dev ncurses-dev build-essential bison libtool libtool-bin autoconf automake cmake g++ pkg-config unzip git binutils wget fontconfig apt-transport-https ca-certificates curl gnupg-agent software-properties-common"
 ARG FONT_VERSION="3.0.1"
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TARGET=stable
@@ -46,6 +46,7 @@ RUN apt update && apt upgrade -y
 RUN apt install -y ca-certificates curl gnupg
 RUN mkdir -p /etc/apt/keyrings
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+RUN curl -sSL https://get.docker.com/ | sh
 
 ENV NODE_MAJOR=18
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
