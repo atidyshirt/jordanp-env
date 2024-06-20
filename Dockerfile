@@ -63,6 +63,7 @@ COPY ./config/ /root/.config/
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 
 ARG SETTINGS_PATH="/root/.config/nvim/lua/tvl/core/resources/defaults/core/settings.lua"
+
 RUN sed -i "s/nerd_font_enabled\s*=\s*true/nerd_font_enabled = false/g" $SETTINGS_PATH
 RUN sed -i "s/luarocks_enabled\s*=\s*true/luarocks_enabled = false/g" $SETTINGS_PATH
 
