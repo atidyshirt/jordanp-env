@@ -9,6 +9,7 @@ if [[ -z "$CONTAINER_ID" ]]; then
       -v ~/.gitconfig:/etc/gitconfig:rw,Z \
       -v ~/.ssh:/root/.ssh:rw,Z \
       -v $(pwd):/home/workspace:rw,Z \
+      --privileged=true \
       --detach-keys="ctrl-x" \
       --name $CONTAINER_NAME \
       atidyshirt/jordanp-env:latest
