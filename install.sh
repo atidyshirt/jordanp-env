@@ -5,10 +5,10 @@ CONTAINER_ID=$(docker ps -aqf name=$CONTAINER_NAME)
 
 if [[ -z "$CONTAINER_ID" ]]; then
     docker run -it \
-      -v /var/run/docker.sock:/var/run/docker.sock \
-      -v ~/.gitconfig:/etc/gitconfig \
-      -v ~/.ssh:/root/.ssh \
-      -v $(pwd):/home/workspace \
+      -v /var/run/docker.sock:/var/run/docker.sock:rw,Z \
+      -v ~/.gitconfig:/etc/gitconfig:rw,Z \
+      -v ~/.ssh:/root/.ssh:rw,Z \
+      -v $(pwd):/home/workspace:rw,Z \
       --detach-keys="ctrl-x" \
       --name $CONTAINER_NAME \
       atidyshirt/jordanp-env:latest
