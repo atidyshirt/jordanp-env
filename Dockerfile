@@ -75,4 +75,4 @@ RUN nvim --headless "+Lazy! sync" +qa
 RUN mkdir -p /home/workspace
 WORKDIR /home/workspace
 
-CMD ["/usr/local/bin/tmux"]
+CMD ["/bin/zsh"]
