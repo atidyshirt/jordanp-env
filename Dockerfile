@@ -30,8 +30,8 @@ COPY --from=builder /usr/local /usr/local/
 ENV TERM=xterm-256color
 ENV NVIM_LSP_DOCKER=true
 
-ARG RUNTIME_LIBS="gettext ncurses-dev libevent musl-dev gcompat"
-ARG RUNTIME_UTILS="ca-certificates curl gnupg zsh git make ripgrep gcc nodejs npm python3 lua luajit zsh-vcs bash mandoc man-pages docker"
+ARG RUNTIME_LIBS="gettext-dev ncurses-dev libevent-dev musl-dev"
+ARG RUNTIME_UTILS="ca-certificates curl gnupg zsh git make ripgrep gcc nodejs npm python3 lua luajit zsh-vcs bash mandoc docker"
 ARG RUNTIME_NODE_DEPS="yarn typescript"
 
 RUN apk add --no-cache ${RUNTIME_LIBS} ${RUNTIME_UTILS} && npm install -g ${RUNTIME_NODE_DEPS}
