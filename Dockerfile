@@ -1,7 +1,7 @@
 # Docker file for jordanp-env image.
 # @author Jordan Pyott
 
-FROM alpine:3.18 AS builder
+FROM alpine:3.21 AS builder
 
 ARG BUILD_DEPS="ninja-build gettext-dev libevent-dev ncurses-dev build-base bison libtool autoconf automake cmake g++ pkgconfig unzip git binutils wget fontconfig"
 ARG TMUX_VERSION="3.3a"
@@ -23,7 +23,7 @@ RUN wget https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${T
     && make \
     && make install
 
-FROM alpine:3.18
+FROM alpine:3.21
 
 COPY --from=builder /usr/local /usr/local/
 
