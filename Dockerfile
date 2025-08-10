@@ -5,7 +5,7 @@ FROM alpine:3.21 AS builder
 
 ARG BUILD_DEPS="ninja-build gettext-dev libevent-dev ncurses-dev build-base bison libtool autoconf automake cmake g++ pkgconfig unzip git binutils wget fontconfig"
 ARG TMUX_VERSION="3.3a"
-ARG TARGET=stable
+ARG TARGET=nightly
 
 RUN apk add --no-cache ${BUILD_DEPS} \
     && git clone https://github.com/neovim/neovim.git /tmp/neovim \
@@ -39,9 +39,9 @@ RUN apk add --no-cache ${RUNTIME_LIBS} ${RUNTIME_UTILS} && npm install -g ${RUNT
 COPY ./config/ /root/.config/
 COPY ./home/ /root/
 
-ARG SETTINGS_PATH="/root/.config/nvim/lua/core/resources/defaults/core/settings.lua"
-RUN sed -i "s/nerd_font_enabled\s*=\s*true/nerd_font_enabled = false/g" $SETTINGS_PATH \
-    && sed -i "s/luarocks_enabled\s*=\s*true/luarocks_enabled = false/g" $SETTINGS_PATH
+# neovim enviornment variables - disable defaults for quick work in containers
+ENV NERD_FONT_ENABLED=false
+ENV AUTO_DARK_MODE_ENABLED=false
 
 RUN nvim --headless "+Lazy! sync" +qa
 RUN nvim --headless "MasonInstall --target=linux_arm64_gnu lua-language-server" +qa
