@@ -1,6 +1,3 @@
-# hack safe work directory on container
-git config --global --add safe.directory /home/workspace
-
 export LC_ALL="C.UTF-8"
 export LANG="C.UTF-8"
 
