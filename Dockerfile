@@ -16,6 +16,9 @@ COPY ./home/ /root/
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+RUN PATH="/nix/jordanp-env/bin:${PATH}" nvim --headless "+lua vim.pack.update()" "+qall"
+
+VOLUME /root
 WORKDIR /root
 
 ENTRYPOINT ["/entrypoint.sh"]
