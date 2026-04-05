@@ -13,6 +13,7 @@
         envPkgs = with pkgs; [
           bash
           coreutils
+          ncurses
           neovim
           tmux
           zsh

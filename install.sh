@@ -11,6 +11,7 @@ run_args=(
   -it
   --detach-keys="ctrl-x"
   -e "JORDANP_WORKSPACE=${WORKSPACE}"
+  -e "XDG_CONFIG_HOME=/root/.config"
   -w "${WORKSPACE}"
   -v /var/run/docker.sock:/var/run/docker.sock:rw,Z
   -v "${HOME}/.gitconfig:/etc/gitconfig:rw,Z"
