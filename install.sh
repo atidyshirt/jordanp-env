@@ -1,5 +1,8 @@
 #!/bin/bash
 
+IMAGE_NAME="ghcr.io/jordanp/jordanp-env"
+IMAGE_VERSION="latest"
+
 CONTAINER_NAME="env-$(basename $(pwd) | sed 's/[^a-zA-Z0-9]/-/g')"
 CONTAINER_ID=$(docker ps -aqf name=$CONTAINER_NAME)
 
@@ -14,7 +17,7 @@ if [[ -z "$CONTAINER_ID" ]]; then
       --privileged=true \
       --detach-keys="ctrl-x" \
       --name $CONTAINER_NAME \
-      atidyshirt/jordanp-env:latest
+      $IMAGE_NAME:$IMAGE_VERSION
 else
     docker start -ai $CONTAINER_NAME
 fi
