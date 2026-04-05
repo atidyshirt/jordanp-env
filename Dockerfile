@@ -4,6 +4,9 @@
 # ENV TERM=xterm-256color
 FROM nixos/nix:latest
 
+# Nix's sandbox loads a seccomp BPF filter; that fails under QEMU (Buildx arm64 on amd64 CI).
+ENV NIX_CONFIG="sandbox = false"
+
 # Layer cache: flake changes less often than dotfiles.
 COPY flake.nix flake.lock /root/
 
