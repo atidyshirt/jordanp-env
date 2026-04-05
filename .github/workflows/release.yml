@@ -14,14 +14,15 @@ jobs:
     name: Semantic release
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.release.outputs.version }}
-      released: ${{ steps.release.outputs.released }}
+      version: ${{ steps.semantic.outputs.version }}
+      version_major: ${{ steps.semantic.outputs.version_major }}
+      version_minor: ${{ steps.semantic.outputs.version_minor }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - id: release
+      - id: semantic
         uses: go-semantic-release/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,7 +54,8 @@ jobs:
           tags: |
             type=raw,value=latest
             type=sha,prefix=sha-
-            type=raw,value=${{ needs.release.outputs.version }},enable=${{ needs.release.outputs.released == 'true' }}
+            type=raw,value=${{ needs.release.outputs.version }},enable=${{ needs.release.outputs.version != '' }}
+            type=raw,value=${{ needs.release.outputs.version_major }}.${{ needs.release.outputs.version_minor }},enable=${{ needs.release.outputs.version != '' }}
 
       - uses: docker/build-push-action@v5
         with:
