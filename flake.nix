@@ -20,9 +20,7 @@
           git
           curl
           wget
-          gnupg
           jq
-          ripgrep
           nodejs
           python3Minimal
           luajit
