@@ -4,13 +4,12 @@
 # ENV TERM=xterm-256color
 FROM nixos/nix:latest
 
-# Nix's sandbox loads a seccomp BPF filter; that fails under QEMU (Buildx arm64 on amd64 CI).
-ENV NIX_CONFIG="sandbox = false"
-
 # Layer cache: flake changes less often than dotfiles.
 COPY flake.nix flake.lock /root/
 
-RUN nix --extra-experimental-features "nix-command flakes" build "/root#default" --out-link /nix/jordanp-env
+# QEMU user emulation (Buildx arm64 on amd64): seccomp BPF fails; see https://github.com/NixOS/nix/issues/5258
+RUN nix --extra-experimental-features "nix-command flakes" build "/root#default" --out-link /nix/jordanp-env \
+    --option filter-syscalls false
 
 COPY ./config/ /root/.config/
 COPY ./home/ /root/
