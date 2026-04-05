@@ -3,7 +3,7 @@
 
 FROM alpine:3.21 AS builder
 
-ARG BUILD_DEPS="ninja-build gettext-dev libevent-dev ncurses-dev build-base bison libtool autoconf automake cmake g++ pkgconfig unzip git binutils wget fontconfig"
+ARG BUILD_DEPS="ninja-build gettext-dev libevent-dev ncurses-dev build-base bison libtool autoconf automake cmake g++ pkgconfig unzip git binutils wget fontconfig linux-headers"
 ARG TMUX_VERSION="3.3a"
 ARG TARGET=nightly
 
