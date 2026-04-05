@@ -15,8 +15,6 @@ run_args=(
   -v /var/run/docker.sock:/var/run/docker.sock:rw,Z
   -v "${HOME}/.gitconfig:/etc/gitconfig:rw,Z"
   -v "${WORKSPACE}:${WORKSPACE}:rw,Z"
-  -v "${SCRIPT_DIR}/config:/root/.config:rw,Z"
-  -v "${SCRIPT_DIR}/home:/root:rw,Z"
   --privileged=true
   --name "$CONTAINER_NAME"
 )
