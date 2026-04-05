@@ -1,0 +1,6 @@
+# Keep build context small; these are often huge and can be synced at runtime instead.
+home/.local/share/nvim/mason
+home/.cache
+home/.local/state
+**/.git
+**/node_modules

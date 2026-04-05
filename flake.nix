@@ -21,11 +21,12 @@
           curl
           wget
           gnupg
+          jq
           ripgrep
           nodejs
-          python3
+          python3Minimal
           luajit
-          docker
+          docker-client
           cacert
         ];
       in
