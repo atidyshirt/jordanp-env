@@ -10,21 +10,25 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        # Use gitMinimal: default `git` pulls a full Python stack (~1+ GiB closure).
+        # nodejs-slim (+ npm output): Mason needs Node for many LSP installers; slimmer than `nodejs`.
+        # Closure "stripping" in Nix is mostly package choice — deps are hard-linked by reference.
         envPkgs = with pkgs; [
-          bash
+          # Minimal /etc/passwd and /etc/group for containerized environments.
+          dockerTools.fakeNss
           coreutils
           ncurses
+          gnugrep
           neovim
           tmux
           zsh
-          git
+          gitMinimal
           curl
-          wget
           jq
-          nodejs
+          nodejs-slim
+          nodejs-slim.npm
           python3Minimal
           luajit
-          docker-client
           cacert
         ];
       in
@@ -32,6 +36,8 @@
         packages.default = pkgs.buildEnv {
           name = "jordanp-env";
           paths = envPkgs;
+          # Only link usual runtime outputs; avoids pulling dev/doc-only outputs where split.
+          extraOutputsToInstall = [ "out" "bin" "lib" ];
         };
 
         devShells.default = pkgs.mkShell {

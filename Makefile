@@ -8,7 +8,7 @@ login:
 	docker login ghcr.io
 
 build-environment:
-	docker build -t $(environment) .
+	docker build --build-arg PREWARM_NVIM=0 -t $(environment) .
 
 push-environment: login
 	docker push $(environment)
