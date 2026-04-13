@@ -6,7 +6,8 @@ FROM nixos/nix:latest AS builder
 ARG PREWARM_NVIM
 ENV TERM=xterm-256color
 
-COPY flake.nix flake.lock /root/
+COPY flake.nix flake.lock devenv.nix devenv.yaml /root/
+COPY nix/modules /root/nix/modules
 
 # QEMU user emulation (Buildx arm64 on amd64): seccomp BPF fails; see https://github.com/NixOS/nix/issues/5258
 RUN nix --extra-experimental-features "nix-command flakes" build "/root#default" --out-link /nix/jordanp-env \
@@ -49,4 +50,4 @@ COPY --from=builder /root/.local /root/.local
 WORKDIR /root
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["zsh", "-il"]
+CMD ["nvim"]

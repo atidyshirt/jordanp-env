@@ -1,7 +1,7 @@
 #!/bin/bash
 
 IMAGE_NAME="${IMAGE_NAME:-ghcr.io/atidyshirt/jordanp-env}"
-IMAGE_VERSION="${IMAGE_VERSION:-3.0}"
+IMAGE_VERSION="${IMAGE_VERSION:-4.0}"
 
 WORKSPACE="$(pwd -P)"
 CONTAINER_NAME="env-$(basename "$WORKSPACE" | sed 's/[^a-zA-Z0-9]/-/g')"

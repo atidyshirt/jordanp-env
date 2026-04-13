@@ -4,44 +4,45 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    devenv.url = "github:cachix/devenv";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, devenv, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        # Use gitMinimal: default `git` pulls a full Python stack (~1+ GiB closure).
-        # nodejs-slim (+ npm output): Mason needs Node for many LSP installers; slimmer than `nodejs`.
-        # Closure "stripping" in Nix is mostly package choice — deps are hard-linked by reference.
-        envPkgs = with pkgs; [
-          # Minimal /etc/passwd and /etc/group for containerized environments.
-          dockerTools.fakeNss
-          coreutils
-          ncurses
-          gnugrep
-          neovim
-          tmux
-          zsh
-          gitMinimal
-          curl
-          jq
-          nodejs-slim
-          nodejs-slim.npm
-          python3Minimal
-          luajit
-          cacert
-        ];
-      in
-      {
-        packages.default = pkgs.buildEnv {
+        commonPackages = import ./nix/modules/common-packages.nix { inherit pkgs; };
+        neovimEnv = pkgs.buildEnv {
           name = "jordanp-env";
-          paths = envPkgs;
-          # Only link usual runtime outputs; avoids pulling dev/doc-only outputs where split.
+          paths = commonPackages;
           extraOutputsToInstall = [ "out" "bin" "lib" ];
         };
+        neovimLauncher = pkgs.writeShellApplication {
+          name = "neovim";
+          runtimeInputs = commonPackages;
+          text = ''
+            exec nvim "$@"
+          '';
+        };
+      in
+      {
+        packages.default = neovimEnv;
+        packages.neovim-env = neovimEnv;
+        packages.neovim = neovimLauncher;
 
-        devShells.default = pkgs.mkShell {
-          buildInputs = envPkgs;
+        apps.neovim = {
+          type = "app";
+          program = "${neovimLauncher}/bin/neovim";
+        };
+
+        devShells.default = devenv.lib.mkShell {
+          inherit inputs pkgs;
+          modules = [
+            ({ ... }: {
+              devenv.root = builtins.toString ./.;
+              imports = [ ./devenv.nix ];
+            })
+          ];
         };
       }
     );
