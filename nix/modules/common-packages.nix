@@ -6,6 +6,9 @@ with pkgs; [
   ncurses
   gnugrep
   gnutar
+  gnumake
+  bash
+  unzip
   fd
   neovim
   zsh
