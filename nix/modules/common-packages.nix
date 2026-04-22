@@ -5,6 +5,7 @@ with pkgs; [
   coreutils
   ncurses
   gnugrep
+  gnutar
   fd
   neovim
   zsh
