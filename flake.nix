@@ -12,27 +12,27 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         commonPackages = import ./nix/modules/common-packages.nix { inherit pkgs; };
-        neovimEnv = pkgs.buildEnv {
+        neovimDockerImage = pkgs.buildEnv {
           name = "jordanp-env";
-          paths = commonPackages;
+          paths = commonPackages.containerPackages;
           extraOutputsToInstall = [ "out" "bin" "lib" ];
         };
-        neovimLauncher = pkgs.writeShellApplication {
+        neovimNixPackage = pkgs.writeShellApplication {
           name = "neovim";
-          runtimeInputs = commonPackages;
+          runtimeInputs = commonPackages.hostPackages;
           text = ''
             exec nvim "$@"
           '';
         };
       in
       {
-        packages.default = neovimEnv;
-        packages.neovim-env = neovimEnv;
-        packages.neovim = neovimLauncher;
+        packages.default = neovimDockerImage;
+        packages.neovim-env = neovimDockerImage;
+        packages.neovim = neovimNixPackage;
 
         apps.neovim = {
           type = "app";
-          program = "${neovimLauncher}/bin/neovim";
+          program = "${neovimNixPackage}/bin/neovim";
         };
 
         devShells.default = devenv.lib.mkShell {
