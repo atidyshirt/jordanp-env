@@ -21,6 +21,7 @@
           name = "neovim";
           runtimeInputs = commonPackages.hostPackages;
           text = ''
+            export PATH="/usr/bin:/bin:${pkgs.lib.makeBinPath commonPackages.hostPackages}:$PATH"
             exec nvim "$@"
           '';
         };
