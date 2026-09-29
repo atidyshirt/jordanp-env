@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     devenv.url = "github:cachix/devenv";
-    neovim-config.url = "github:atidyshirt/nvim";
+    neovim-config.url = "github:atidyshirt/neovim";
   };
 
   outputs = { self, nixpkgs, flake-utils, devenv, neovim-config, ... }@inputs:
