@@ -6,7 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     devenv.url = "github:cachix/devenv";
     neovim = {
-      url = "github:atidyshirt/neovim/v0.4.0";
+      url = "github:atidyshirt/neovim/v0.4.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
