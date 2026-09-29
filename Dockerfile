@@ -13,7 +13,7 @@ COPY nix/modules /root/nix/modules
 RUN nix --extra-experimental-features "nix-command flakes" build "/root#default" --out-link /nix/jordanp-env \
     --option filter-syscalls false
 
-COPY ./config/ /root/.config/
+COPY ./config/tmux/ /root/.config/tmux/
 COPY ./home/ /root/
 RUN mkdir -p /root/.local/share /root/.local/state /root/.cache
 
@@ -43,7 +43,7 @@ ENV TERM=xterm-256color \
 COPY --from=builder /tmp/rootfs/ /
 
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
-COPY ./config/ /root/.config/
+COPY ./config/tmux/ /root/.config/tmux/
 COPY ./home/ /root/
 COPY --from=builder /root/.local /root/.local
 

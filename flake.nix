@@ -19,7 +19,10 @@
           config.allowUnfreePredicate =
             pkg: builtins.elem (nixpkgs.lib.getName pkg) [ "claude-code" ];
         };
-        commonPackages = import ./nix/modules/common-packages.nix { inherit pkgs; };
+        commonPackages = import ./nix/modules/common-packages.nix {
+          inherit pkgs;
+          neovimPackage = neovim.packages.${system}.default;
+        };
         neovimDockerImage = pkgs.buildEnv {
           name = "jordanp-env";
           paths = commonPackages.containerPackages;

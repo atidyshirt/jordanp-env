@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, neovimPackage ? pkgs.neovim }:
 with pkgs;
 let
   hostPackages = [
@@ -27,7 +27,11 @@ in
 {
   inherit hostPackages;
 
+  # neovimPackage (the atidyshirt/neovim flake's wrapped package) replaces the
+  # bare `neovim` from hostPackages here so the container gets nvim with its
+  # config baked in, instead of a config-less editor.
   containerPackages = [
     dockerTools.fakeNss
-  ] ++ hostPackages;
+    neovimPackage
+  ] ++ lib.remove neovim hostPackages;
 }
