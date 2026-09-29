@@ -2,9 +2,10 @@
 
 IMAGE_NAME="${IMAGE_NAME:-ghcr.io/atidyshirt/jordanp-env}"
 IMAGE_VERSION="${IMAGE_VERSION:-4.0}"
+CMD="${1:-nvim}"
 
 WORKSPACE="$(pwd -P)"
-CONTAINER_NAME="env-$(basename "$WORKSPACE" | sed 's/[^a-zA-Z0-9]/-/g')"
+CONTAINER_NAME="env-${CMD}-$(basename "$WORKSPACE" | sed 's/[^a-zA-Z0-9]/-/g')"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 run_args=(
@@ -21,7 +22,7 @@ run_args=(
 )
 
 if ! docker container inspect "$CONTAINER_NAME" >/dev/null 2>&1; then
-  docker run "${run_args[@]}" "${IMAGE_NAME}:${IMAGE_VERSION}"
+  docker run "${run_args[@]}" "${IMAGE_NAME}:${IMAGE_VERSION}" "$CMD"
 else
   docker start -ai "$CONTAINER_NAME"
 fi

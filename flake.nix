@@ -39,6 +39,15 @@
           program = "${neovim.packages.${system}.default}/bin/nvim";
         };
 
+        apps.shell = {
+          type = "app";
+          program = "${pkgs.writeShellApplication {
+            name = "jordanp-shell";
+            runtimeInputs = commonPackages.hostPackages;
+            text = ''exec zsh "$@"'';
+          }}/bin/jordanp-shell";
+        };
+
         devShells.default = devenv.lib.mkShell {
           inherit inputs pkgs;
           modules = [
