@@ -555,6 +555,22 @@
         "type": "github"
       }
     },
+    "neovim-config": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790559936,
+        "narHash": "sha256-T2mLP/tT0Eqmtsf5T4m3NnJ6xpX3EQVFbJ/z2wzK8ys=",
+        "owner": "atidyshirt",
+        "repo": "neovim",
+        "rev": "35c1a3dddd124ce775d3391f2630c4f7d5bb9e64",
+        "type": "github"
+      },
+      "original": {
+        "owner": "atidyshirt",
+        "repo": "neovim",
+        "type": "github"
+      }
+    },
     "nix": {
       "inputs": {
         "flake-compat": [
@@ -815,6 +831,7 @@
       "inputs": {
         "devenv": "devenv",
         "flake-utils": "flake-utils",
+        "neovim-config": "neovim-config",
         "nixpkgs": "nixpkgs_5"
       }
     },
