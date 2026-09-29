@@ -23,9 +23,25 @@
           inherit pkgs;
           neovimPackage = neovim.packages.${system}.default;
         };
+        # Bash (not zsh/whatever the host uses) on purpose, and visually
+        # distinct - a devcontainer-style badge on the prompt plus
+        # enter/exit banners - so it's obvious at a glance whether a given
+        # terminal is inside this environment or not.
+        shellRc = pkgs.writeText "jordanp-shell.bashrc" ''
+          PS1='\[\033[1;97;44m\] jordanp-env \[\033[0m\] \[\033[36m\]\w\[\033[0m\] \$ '
+          echo -e "\033[1;97;44m>>> entering jordanp-env shell <<<\033[0m"
+          trap 'echo -e "\033[1;97;41m<<< left jordanp-env shell >>>\033[0m"' EXIT
+        '';
+
+        jordanpShell = pkgs.writeShellApplication {
+          name = "jordanp-shell";
+          runtimeInputs = commonPackages.hostPackages;
+          text = ''exec bash --rcfile ${shellRc} -i "$@"'';
+        };
+
         neovimDockerImage = pkgs.buildEnv {
           name = "jordanp-env";
-          paths = commonPackages.containerPackages;
+          paths = commonPackages.containerPackages ++ [ jordanpShell ];
           extraOutputsToInstall = [ "out" "bin" "lib" ];
         };
       in
@@ -41,11 +57,7 @@
 
         apps.shell = {
           type = "app";
-          program = "${pkgs.writeShellApplication {
-            name = "jordanp-shell";
-            runtimeInputs = commonPackages.hostPackages;
-            text = ''exec zsh "$@"'';
-          }}/bin/jordanp-shell";
+          program = "${jordanpShell}/bin/jordanp-shell";
         };
 
         devShells.default = devenv.lib.mkShell {

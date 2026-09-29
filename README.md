@@ -33,10 +33,12 @@ The container mounts your current directory and starts `nvim` in that same path.
 
 ## Dockerized shell
 
-Same image and mount, but drops you into a `zsh` shell instead of Neovim -
+Same image and mount, but drops you into a bash shell instead of Neovim -
 useful as a devcontainer-style environment with Claude Code, tmux, and
-friends available, independent of any editor:
+friends available, independent of any editor. The prompt gets a
+`jordanp-env` badge and enter/exit banners so it's obvious when you're
+inside it:
 
 ```sh
-bash <(curl -sL https://raw.githubusercontent.com/atidyshirt/jordanp-env/main/install.sh) zsh
+bash <(curl -sL https://raw.githubusercontent.com/atidyshirt/jordanp-env/main/install.sh) jordanp-shell
 ```
