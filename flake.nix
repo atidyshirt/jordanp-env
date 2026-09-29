@@ -23,19 +23,15 @@
           inherit pkgs;
           neovimPackage = neovim.packages.${system}.default;
         };
-        # Bash (not zsh/whatever the host uses) on purpose, and visually
-        # distinct - a devcontainer-style badge on the prompt plus
-        # enter/exit banners - so it's obvious at a glance whether a given
-        # terminal is inside this environment or not.
         shellRc = pkgs.writeText "jordanp-shell.bashrc" ''
-          PS1='\[\033[1;97;44m\] jordanp-env \[\033[0m\] \[\033[36m\]\w\[\033[0m\] \$ '
-          echo -e "\033[1;97;44m>>> entering jordanp-env shell <<<\033[0m"
-          trap 'echo -e "\033[1;97;41m<<< left jordanp-env shell >>>\033[0m"' EXIT
+          PS1='\[\033[38;5;73m\]jordanp-env\[\033[0m\] \[\033[2m\]\w\[\033[0m\] \[\033[38;5;73m\]\$\[\033[0m\] '
+          echo -e "\033[2m\033[38;5;73mjordanp-env\033[0m\033[2m shell (type 'exit' to leave)\033[0m"
+          trap 'echo -e "\033[2mleft jordanp-env shell\033[0m"' EXIT
         '';
 
         jordanpShell = pkgs.writeShellApplication {
           name = "jordanp-shell";
-          runtimeInputs = commonPackages.hostPackages;
+          runtimeInputs = commonPackages.containerPackages;
           text = ''exec bash --rcfile ${shellRc} -i "$@"'';
         };
 
