@@ -20,6 +20,8 @@ let
     python3Minimal
     luajit
     cacert
+    tmux
+    claude-code
   ];
 in
 {

@@ -349,6 +349,24 @@
         "type": "github"
       }
     },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "git-hooks": {
       "inputs": {
         "flake-compat": [
@@ -555,15 +573,18 @@
         "type": "github"
       }
     },
-    "neovim-config": {
-      "flake": false,
+    "neovim": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1790559936,
-        "narHash": "sha256-T2mLP/tT0Eqmtsf5T4m3NnJ6xpX3EQVFbJ/z2wzK8ys=",
-        "owner": "atidyshirt",
-        "repo": "neovim",
-        "rev": "35c1a3dddd124ce775d3391f2630c4f7d5bb9e64",
-        "type": "github"
+        "lastModified": 1790667865,
+        "narHash": "sha256-gtU5RNf1tCYLom0oiylfBQ3LtGxdaUsdNtp+7Ic4hSg=",
+        "path": "/Users/jordanp/projects/neovim",
+        "type": "path"
       },
       "original": {
         "owner": "atidyshirt",
@@ -755,11 +776,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1775036866,
-        "narHash": "sha256-ZojAnPuCdy657PbTq5V0Y+AHKhZAIwSIT2cb8UgAz/U=",
-        "owner": "nixos",
+        "lastModified": 1782959384,
+        "narHash": "sha256-xnJJk+ct+D2+wdRxj1wk36w5zV9RVESwRqcklPdt3fM=",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "6201e203d09599479a3b3450ed24fa81537ebc4e",
+        "rev": "65179426c83bb3f6bc14898b42ea1c6f01d374b0",
         "type": "github"
       },
       "original": {
@@ -831,7 +852,7 @@
       "inputs": {
         "devenv": "devenv",
         "flake-utils": "flake-utils",
-        "neovim-config": "neovim-config",
+        "neovim": "neovim",
         "nixpkgs": "nixpkgs_5"
       }
     },
@@ -857,6 +878,21 @@
       }
     },
     "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",

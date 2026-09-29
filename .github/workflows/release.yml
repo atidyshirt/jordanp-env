@@ -30,10 +30,35 @@ jobs:
           changelog-file: CHANGELOG.md
           allow-initial-development-versions: true
 
+  test:
+    name: Test flake and image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: nix flake check
+        run: nix flake check --no-build
+
+      - name: Build image
+        run: docker build --build-arg PREWARM_NVIM=0 -t jordanp-env:test .
+
+      - name: Smoke test image
+        run: |
+          docker run --rm jordanp-env:test nvim --headless "+qall"
+          docker run --rm jordanp-env:test tmux -V
+          docker run --rm jordanp-env:test claude --version
+
   publish:
     name: Push image to GHCR
-    needs: release
-    if: ${{ always() && !cancelled() && github.ref == 'refs/heads/main' }}
+    needs: [release, test]
+    if: ${{ always() && !cancelled() && needs.test.result == 'success' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
