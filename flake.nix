@@ -5,9 +5,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     devenv.url = "github:cachix/devenv";
+    neovim-config.url = "github:atidyshirt/nvim";
   };
 
-  outputs = { self, nixpkgs, flake-utils, devenv, ... }@inputs:
+  outputs = { self, nixpkgs, flake-utils, devenv, neovim-config, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
@@ -21,7 +22,7 @@
           pname = "jordanp-neovim-config";
           version = "git";
 
-          src = ./config/nvim;
+          src = neovim-config;
 
           installPhase = ''
             mkdir -p $out/nvim
