@@ -581,10 +581,12 @@
         ]
       },
       "locked": {
-        "lastModified": 1790667865,
-        "narHash": "sha256-gtU5RNf1tCYLom0oiylfBQ3LtGxdaUsdNtp+7Ic4hSg=",
-        "path": "/Users/jordanp/projects/neovim",
-        "type": "path"
+        "lastModified": 1790668612,
+        "narHash": "sha256-r3YoVEc36/bm55+/FWISqigNc5r1m/GXlqvFUFhkFD0=",
+        "owner": "atidyshirt",
+        "repo": "neovim",
+        "rev": "0530ab69bd6430b478c1c552a8b4ffa1ef4d55d9",
+        "type": "github"
       },
       "original": {
         "owner": "atidyshirt",
