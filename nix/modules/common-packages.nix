@@ -2,6 +2,7 @@
 with pkgs;
 let
   hostPackages = [
+    tree-sitter
     coreutils
     ncurses
     gnugrep
