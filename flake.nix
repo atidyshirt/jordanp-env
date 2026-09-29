@@ -24,8 +24,20 @@
           neovimPackage = neovim.packages.${system}.default;
         };
         shellRc = pkgs.writeText "jordanp-shell.bashrc" ''
-          PS1='\[\033[38;5;73m\]jordanp-env\[\033[0m\] \[\033[2m\]\w\[\033[0m\] \[\033[38;5;73m\]\$\[\033[0m\] '
-          echo -e "\033[2m\033[38;5;73mjordanp-env\033[0m\033[2m shell (type 'exit' to leave)\033[0m"
+          # Standard Debian/VS Code devcontainer .bashrc prompt: bold green
+          # user@host, bold blue cwd. Also sets the terminal tab title.
+          PS1='\[\e]0;\u@\h: \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+          # GNU coreutils' stock dircolors scheme is low-contrast on dark
+          # backgrounds (near-black blue dirs); use a more readable palette.
+          export LS_COLORS='di=01;36:ln=01;36:so=01;35:pi=33:ex=01;32:bd=01;33:cd=01;33:su=37;41:sg=30;43:tw=30;42:ow=34;42'
+          alias ls='ls --color=auto'
+          alias grep='grep --color=auto'
+          alias ll='ls -alF'
+          alias la='ls -A'
+          alias l='ls -CF'
+
+          echo -e "\033[2mjordanp-env shell (type 'exit' to leave)\033[0m"
           trap 'echo -e "\033[2mleft jordanp-env shell\033[0m"' EXIT
         '';
 
