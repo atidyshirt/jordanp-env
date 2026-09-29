@@ -17,11 +17,26 @@
           paths = commonPackages.containerPackages;
           extraOutputsToInstall = [ "out" "bin" "lib" ];
         };
+        neovimConfig = pkgs.stdenvNoCC.mkDerivation {
+          pname = "jordanp-neovim-config";
+          version = "git";
+
+          src = ./config/nvim;
+
+          installPhase = ''
+            mkdir -p $out/nvim
+            cp -r . $out/nvim/
+          '';
+        };
+
         neovimNixPackage = pkgs.writeShellApplication {
           name = "neovim";
+
           runtimeInputs = commonPackages.hostPackages;
+
           text = ''
             export PATH="/usr/bin:/bin:${pkgs.lib.makeBinPath commonPackages.hostPackages}:$PATH"
+            export XDG_CONFIG_HOME="${neovimConfig}"
             exec nvim "$@"
           '';
         };
