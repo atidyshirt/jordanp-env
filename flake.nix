@@ -24,9 +24,16 @@
           neovimPackage = neovim.packages.${system}.default;
         };
         shellRc = pkgs.writeText "jordanp-shell.bashrc" ''
+          # \u calls getpwuid() for a fresh NSS lookup, which Nix-built bash
+          # often can't resolve against the host's passwd database on
+          # non-NixOS systems ("I have no name!"). Use $USER instead - it's
+          # just an inherited env var, no lookup required. \h (hostname) is
+          # a syscall, not NSS, so it's left alone.
+          : "''${USER:=''${LOGNAME:-user}}"
+
           # Standard Debian/VS Code devcontainer .bashrc prompt: bold green
           # user@host, bold blue cwd. Also sets the terminal tab title.
-          PS1='\[\e]0;\u@\h: \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+          PS1='\[\e]0;'"$USER"'@\h: \w\a\]\[\033[01;32m\]'"$USER"'@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
           # GNU coreutils' stock dircolors scheme is low-contrast on dark
           # backgrounds (near-black blue dirs); use a more readable palette.
