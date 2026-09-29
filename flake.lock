@@ -581,15 +581,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1790668612,
-        "narHash": "sha256-r3YoVEc36/bm55+/FWISqigNc5r1m/GXlqvFUFhkFD0=",
+        "lastModified": 1790674641,
+        "narHash": "sha256-Ke6dFb/aVk6KTBhtXJongrzGJYwx5a/NBFYJJGMoc4o=",
         "owner": "atidyshirt",
         "repo": "neovim",
-        "rev": "0530ab69bd6430b478c1c552a8b4ffa1ef4d55d9",
+        "rev": "a0834e861f5ef54bcfe2196935c43037aef970af",
         "type": "github"
       },
       "original": {
         "owner": "atidyshirt",
+        "ref": "v0.4.0",
         "repo": "neovim",
         "type": "github"
       }
